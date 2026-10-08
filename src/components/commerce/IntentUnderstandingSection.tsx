@@ -1,234 +1,225 @@
-import React, { useState } from 'react';
-import { Cpu, DollarSign, Database, CheckCircle2, Sparkles, RefreshCw } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Cpu, DollarSign, Database, CheckCircle2, Sparkles, RefreshCw, Layers } from 'lucide-react';
 import { useCommerce } from '../../context/CommerceContext';
 import { aegisAudio } from '../../utils/audio';
 
 export const IntentUnderstandingSection: React.FC = () => {
   const { userIntent, setUserIntent } = useCommerce();
-  const [customInput, setCustomInput] = useState(userIntent.rawQuery);
-  const [isParsing, setIsParsing] = useState(false);
+  const [activeStage, setActiveStage] = useState<'prompt' | 'crystallizing' | 'structured'>('structured');
+  const [typewriterIndex, setTypewriterIndex] = useState(0);
 
-  const samplePrompts = [
-    "I need a laptop under ₹80,000, minimum 32GB RAM, mainly for AI/ML.",
-    "Looking for reference audio headphones under ₹30,000 with planar magnetic drivers.",
-    "Need a 4K camera under ₹1,20,000 with dual CFexpress card slots for cinema."
-  ];
+  const fullPrompt = "I need a laptop under ₹80,000, minimum 32GB RAM, mainly for AI/ML.";
 
-  const handleSelectSample = (prompt: string) => {
+  // Typewriter Loop when prompted
+  useEffect(() => {
+    if (activeStage !== 'prompt') return;
+    if (typewriterIndex < fullPrompt.length) {
+      const timer = setTimeout(() => {
+        setTypewriterIndex(prev => prev + 1);
+      }, 35);
+      return () => clearTimeout(timer);
+    } else {
+      // Prompt complete, transition into crystallizing
+      const timer = setTimeout(() => {
+        setActiveStage('crystallizing');
+        aegisAudio.playVerify();
+        setTimeout(() => {
+          setActiveStage('structured');
+        }, 900);
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+  }, [activeStage, typewriterIndex]);
+
+  const handleRerun = () => {
     aegisAudio.playClick();
-    setCustomInput(prompt);
-    setIsParsing(true);
-
-    setTimeout(() => {
-      aegisAudio.playVerify();
-      setIsParsing(false);
-      if (prompt.includes('laptop')) {
-        setUserIntent({
-          rawQuery: prompt,
-          budgetMax: 80000,
-          currency: '₹',
-          minRam: 32,
-          primaryUse: 'AI / ML Tensor Computation',
-          extractedTags: [
-            { label: 'BUDGET', value: '≤ ₹80K MAX', isSatisfied: true },
-            { label: 'RAM', value: '32GB+ MIN', isSatisfied: true },
-            { label: 'USE', value: 'AI / ML ACCELERATION', isSatisfied: true },
-          ],
-          activeDriftPercent: 0,
-        });
-      } else if (prompt.includes('audio')) {
-        setUserIntent({
-          rawQuery: prompt,
-          budgetMax: 30000,
-          currency: '₹',
-          minRam: 0,
-          primaryUse: 'Studio Mastering / Acoustic Precision',
-          extractedTags: [
-            { label: 'BUDGET', value: '≤ ₹30K MAX', isSatisfied: true },
-            { label: 'DRIVER', value: 'PLANAR MAGNETIC', isSatisfied: true },
-            { label: 'USE', value: 'LOSSLESS STUDIO MONITORING', isSatisfied: true },
-          ],
-          activeDriftPercent: 0,
-        });
-      } else {
-        setUserIntent({
-          rawQuery: prompt,
-          budgetMax: 120000,
-          currency: '₹',
-          minRam: 0,
-          primaryUse: 'Cinema Production',
-          extractedTags: [
-            { label: 'BUDGET', value: '≤ ₹1.2L MAX', isSatisfied: true },
-            { label: 'STORAGE', value: 'DUAL CFEXPRESS', isSatisfied: true },
-            { label: 'USE', value: '8K PRORES RAW CINEMA', isSatisfied: true },
-          ],
-          activeDriftPercent: 0,
-        });
-      }
-    }, 600);
+    setTypewriterIndex(0);
+    setActiveStage('prompt');
   };
 
   return (
-    <section id="intent-intelligence" className="relative w-full py-28 px-6 md:px-12 bg-[#08090B] border-t border-white/[0.06]">
+    <section id="intent-layer" className="relative w-full py-32 px-6 md:px-12 lg:px-16 bg-[#08090B] border-t border-white/[0.06] overflow-hidden select-none">
+      {/* Background Radiance */}
+      <div className="absolute top-1/3 right-10 w-[500px] h-[500px] bg-[#D71920]/[0.05] rounded-full blur-[140px] pointer-events-none" />
+
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="max-w-3xl mb-16">
           <div className="flex items-center gap-2 mb-3">
             <span className="w-1.5 h-1.5 rounded-full bg-[#D71920]" />
-            <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-white/50">
-              INTENT LAYER · 03
+            <span className="text-[10px] font-mono tracking-[0.34em] uppercase text-white/50">
+              INTENT RECOGNITION · 02
             </span>
           </div>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-normal tracking-[-0.03em] uppercase text-[#F4F4F1] leading-[0.96]">
+
+          <h2 className="text-5xl sm:text-6xl md:text-7xl font-normal tracking-[-0.04em] uppercase text-[#F4F4F1] leading-[0.92]">
             NOT JUST WHAT YOU CLICK. <br />
-            <span className="italic font-light text-white/80">WHAT YOU MEAN.</span>
+            <span className="italic font-light text-white/70">WHAT YOU MEAN.</span>
           </h2>
-          <p className="text-base text-white/50 font-light mt-6 leading-relaxed">
-            Conventional stores track clicks and shove high-margin recommendations into your path.
-            AEGIS extracts the exact semantic intent of your mission, establishing an immutable baseline
-            that guides and protects your session.
+
+          <div className="mt-6 flex items-center gap-3">
+            <span className="px-3 py-1 rounded-full bg-[#D71920]/15 border border-[#D71920]/30 text-[#D71920] font-mono text-[10px] tracking-widest uppercase font-semibold">
+              AEGIS INTENTGUARD
+            </span>
+            <span className="text-xs font-mono text-white/40">
+              Autonomous Natural Language Extraction Layer
+            </span>
+          </div>
+
+          <p className="text-base text-white/50 font-light mt-4 leading-relaxed max-w-2xl">
+            Standard commerce records button clicks and guesses what to upsell.
+            AEGIS ingests raw intent, extracts hard constraints, and reorganizes the entire catalog around your exact requirement.
           </p>
         </div>
 
-        {/* Interactive Shopping Simulation Container */}
-        <div className="rounded-3xl bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/10 p-8 md:p-12 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-[#D71920]/[0.05] rounded-full blur-3xl pointer-events-none" />
-
-          {/* Top Simulation Bar */}
+        {/* Cinematic Transformation Container */}
+        <div className="relative rounded-3xl bg-gradient-to-b from-white/[0.05] via-white/[0.02] to-[#050607] border border-white/10 p-8 sm:p-12 shadow-[0_30px_70px_rgba(0,0,0,0.8)] overflow-hidden">
+          {/* Top Control Bar */}
           <div className="flex items-center justify-between border-b border-white/[0.08] pb-6 mb-8 flex-wrap gap-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-[#D71920]/10 border border-[#D71920]/30 text-[#D71920]">
+              <div className="w-8 h-8 rounded-lg bg-[#D71920]/15 border border-[#D71920]/30 flex items-center justify-center text-[#D71920]">
                 <Sparkles className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="font-mono text-sm tracking-widest text-white uppercase font-semibold">
-                  NATURAL INTENT INGESTION SIMULATOR
+                <h3 className="font-mono text-sm tracking-wider uppercase text-white font-semibold">
+                  NATURAL INTENT COMPILER
                 </h3>
                 <p className="text-[11px] font-mono text-white/40">
-                  Real-time semantic constraint extraction · Zero chatbot gimmicks
+                  Compiles unstructured buyer statements into mathematical boundary matrices
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 text-[10px] font-mono tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-full border border-emerald-500/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              INTENT BUFFER: ARMED
-            </div>
+            <button
+              onClick={handleRerun}
+              data-cursor-text="REPLAY"
+              className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/12 text-white/80 hover:text-white hover:bg-white/[0.08] transition-all font-mono text-[11px] tracking-wider uppercase flex items-center gap-2 cursor-pointer"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              <span>REPLAY TRANSFORMATION</span>
+            </button>
           </div>
 
-          {/* Prompt Selection and Input */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Left: Query Surface */}
-            <div className="lg:col-span-7 flex flex-col gap-4">
-              <label className="text-[11px] font-mono tracking-widest text-white/50 uppercase">
-                USER DECLARED NEED / INGESTION STREAM
-              </label>
+          {/* Transformation Stage: Natural Language Input vs Structured Extraction */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
+            {/* Left: Natural Language Stream */}
+            <div className="lg:col-span-6 flex flex-col justify-between">
+              <div>
+                <span className="text-[10px] font-mono tracking-[0.24em] text-white/40 uppercase block mb-3">
+                  1. DECLARED INTENT STREAM
+                </span>
 
-              <div className="relative">
-                <div className="w-full rounded-2xl bg-black/60 border border-white/15 p-5 text-white/90 font-mono text-sm leading-relaxed min-h-[90px] flex items-center">
-                  {isParsing ? (
-                    <div className="flex items-center gap-3 text-white/60">
-                      <RefreshCw className="w-4 h-4 animate-spin text-[#D71920]" />
-                      <span>Extracting multidimensional constraints...</span>
+                <div className="relative min-h-[140px] rounded-2xl bg-black/60 border border-white/15 p-6 flex flex-col justify-center shadow-inner">
+                  <div className="flex items-start gap-3">
+                    <span className="text-[#D71920] font-mono text-lg font-bold">“</span>
+                    <p className="font-mono text-base sm:text-lg text-white/95 leading-relaxed tracking-wide">
+                      {activeStage === 'prompt' ? fullPrompt.slice(0, typewriterIndex) : fullPrompt}
+                      {activeStage === 'prompt' && (
+                        <span className="inline-block w-2 h-5 bg-[#D71920] ml-1 animate-pulse" />
+                      )}
+                    </p>
+                    <span className="text-[#D71920] font-mono text-lg font-bold">”</span>
+                  </div>
+
+                  {activeStage === 'crystallizing' && (
+                    <div className="absolute inset-0 bg-[#D71920]/10 backdrop-blur-xs flex items-center justify-center rounded-2xl border border-[#D71920]/40 animate-pulse">
+                      <span className="font-mono text-xs tracking-widest text-white uppercase font-bold flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-[#D71920]" />
+                        EXTRACTING CONSTRAINTS VIA GEMMA 4 26B...
+                      </span>
                     </div>
-                  ) : (
-                    <span>"{customInput}"</span>
                   )}
                 </div>
               </div>
 
-              {/* Preset Sample Queries */}
-              <div>
-                <p className="text-[10px] font-mono tracking-widest text-white/40 uppercase mb-2">
-                  TRY INTERACTIVE BENCHMARKS:
-                </p>
-                <div className="flex flex-col gap-2">
-                  {samplePrompts.map((prompt, pIdx) => (
-                    <button
-                      key={pIdx}
-                      onClick={() => handleSelectSample(prompt)}
-                      className={`text-left p-3 rounded-xl border text-xs font-mono tracking-wide transition-all ${
-                        customInput === prompt
-                          ? 'border-[#D71920]/60 bg-[#D71920]/10 text-white'
-                          : 'border-white/[0.08] bg-white/[0.02] text-white/60 hover:text-white hover:bg-white/[0.05]'
-                      }`}
-                    >
-                      → "{prompt}"
-                    </button>
-                  ))}
-                </div>
+              <div className="mt-6 pt-4 border-t border-white/[0.06] text-xs font-mono text-white/40">
+                <span>INTENT STATUS: </span>
+                <span className="text-emerald-400 font-semibold">AUTHENTICATED & IMMUTABLE</span>
               </div>
             </div>
 
-            {/* Right: Extracted AEGIS Constraint Layer */}
-            <div className="lg:col-span-5 rounded-2xl bg-[#050607]/90 border border-white/15 p-6 shadow-xl">
-              <div className="flex items-center justify-between border-b border-white/[0.07] pb-4 mb-5">
-                <span className="text-[10px] font-mono tracking-[0.24em] text-[#D71920] uppercase font-semibold">
-                  AEGIS INTENT MATRIX
+            {/* Right: Crystallized Structured Constraints */}
+            <div className="lg:col-span-6 flex flex-col justify-between">
+              <div>
+                <span className="text-[10px] font-mono tracking-[0.24em] text-white/40 uppercase block mb-3">
+                  2. EXTRACTED INTENT CONTRACT
                 </span>
-                <span className="text-[10px] font-mono text-white/40">3 ACTIVE CONSTRAINTS</span>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {/* Card 1: Budget */}
+                  <div className={`p-5 rounded-2xl border transition-all duration-700 ${
+                    activeStage === 'structured'
+                      ? 'bg-gradient-to-b from-white/[0.06] to-white/[0.02] border-white/20 shadow-xl'
+                      : 'bg-black/40 border-white/[0.08] opacity-50'
+                  }`}>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="w-7 h-7 rounded-lg bg-white/[0.08] flex items-center justify-center text-white">
+                        <DollarSign className="w-3.5 h-3.5 text-[#D71920]" />
+                      </div>
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    </div>
+                    <span className="text-[9px] font-mono tracking-[0.2em] text-white/40 uppercase block mb-1">
+                      BUDGET
+                    </span>
+                    <span className="text-lg font-mono font-medium text-white block">
+                      ₹80,000 MAX
+                    </span>
+                    <span className="text-[10px] font-mono text-white/40 mt-1 block">
+                      Hard Ceiling Cap
+                    </span>
+                  </div>
+
+                  {/* Card 2: RAM */}
+                  <div className={`p-5 rounded-2xl border transition-all duration-700 delay-100 ${
+                    activeStage === 'structured'
+                      ? 'bg-gradient-to-b from-white/[0.06] to-white/[0.02] border-white/20 shadow-xl'
+                      : 'bg-black/40 border-white/[0.08] opacity-50'
+                  }`}>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="w-7 h-7 rounded-lg bg-white/[0.08] flex items-center justify-center text-white">
+                        <Database className="w-3.5 h-3.5 text-[#D71920]" />
+                      </div>
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    </div>
+                    <span className="text-[9px] font-mono tracking-[0.2em] text-white/40 uppercase block mb-1">
+                      RAM
+                    </span>
+                    <span className="text-lg font-mono font-medium text-white block">
+                      32GB MIN
+                    </span>
+                    <span className="text-[10px] font-mono text-white/40 mt-1 block">
+                      Hardware Floor
+                    </span>
+                  </div>
+
+                  {/* Card 3: Purpose */}
+                  <div className={`p-5 rounded-2xl border transition-all duration-700 delay-200 ${
+                    activeStage === 'structured'
+                      ? 'bg-gradient-to-b from-white/[0.06] to-white/[0.02] border-white/20 shadow-xl'
+                      : 'bg-black/40 border-white/[0.08] opacity-50'
+                  }`}>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="w-7 h-7 rounded-lg bg-white/[0.08] flex items-center justify-center text-white">
+                        <Cpu className="w-3.5 h-3.5 text-[#D71920]" />
+                      </div>
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    </div>
+                    <span className="text-[9px] font-mono tracking-[0.2em] text-white/40 uppercase block mb-1">
+                      PURPOSE
+                    </span>
+                    <span className="text-lg font-mono font-medium text-white block">
+                      AI / ML
+                    </span>
+                    <span className="text-[10px] font-mono text-white/40 mt-1 block">
+                      Tensor Acceleration
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-4">
-                {/* Constraint 1: Budget */}
-                <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded bg-white/[0.06] text-white">
-                      <DollarSign className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-[10px] font-mono tracking-widest text-white/40 uppercase block">
-                        EXPLICIT BUDGET
-                      </span>
-                      <span className="text-base font-mono font-medium text-white">
-                        ₹80K MAX
-                      </span>
-                    </div>
-                  </div>
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                </div>
-
-                {/* Constraint 2: RAM */}
-                <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded bg-white/[0.06] text-white">
-                      <Database className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-[10px] font-mono tracking-widest text-white/40 uppercase block">
-                        MEMORY FLOOR
-                      </span>
-                      <span className="text-base font-mono font-medium text-white">
-                        32GB+ RAM
-                      </span>
-                    </div>
-                  </div>
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                </div>
-
-                {/* Constraint 3: Primary Use */}
-                <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded bg-white/[0.06] text-white">
-                      <Cpu className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-[10px] font-mono tracking-widest text-white/40 uppercase block">
-                        PRIMARY WORKLOAD
-                      </span>
-                      <span className="text-base font-mono font-medium text-white">
-                        AI / ML WORKSTATION
-                      </span>
-                    </div>
-                  </div>
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                </div>
-              </div>
-
-              {/* Bottom Verification Note */}
-              <div className="mt-6 pt-4 border-t border-white/[0.06] text-[11px] font-mono text-white/50 leading-relaxed">
-                ✓ Locked into browser session enclave. AEGIS will silently verify all browsed specifications
-                and cart totals against this active matrix.
+              <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-white/40">
+                <span>CONSTRAINTS: 3 LOCKED</span>
+                <span className="text-emerald-400 font-semibold">CATALOG REORGANIZED</span>
               </div>
             </div>
           </div>

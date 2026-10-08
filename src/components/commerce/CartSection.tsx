@@ -1,189 +1,147 @@
 import React from 'react';
-import { ShoppingBag, Trash2, ArrowRight, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { ShoppingBag, ArrowRight, AlertTriangle, ShieldCheck, Sparkles, CheckCircle2 } from 'lucide-react';
 import { useCommerce } from '../../context/CommerceContext';
 import { aegisAudio } from '../../utils/audio';
 
 export const CartSection: React.FC = () => {
-  const {
-    cart,
-    removeFromCart,
-    updateQuantity,
-    cartTotal,
-    userIntent,
-    cartExceedsBudget,
-    cartBudgetOverage,
-    setCurrentView,
-    dismissedCartNotice,
-    setDismissedCartNotice
-  } = useCommerce();
+  const { setCurrentView, setCartDrawerOpen } = useCommerce();
 
   return (
-    <section className="relative w-full py-28 px-6 md:px-12 bg-[#08090B] border-t border-white/[0.06]">
+    <section id="cart-preview" className="relative w-full py-32 px-6 md:px-12 lg:px-16 bg-[#08090B] border-t border-white/[0.06] select-none">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="w-1.5 h-1.5 rounded-full bg-[#D71920]" />
-              <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-white/50">
-                INTENT-AWARE COMMERCE · 07
+              <span className="text-[10px] font-mono tracking-[0.34em] uppercase text-white/50">
+                CINEMATIC CART · 06
               </span>
             </div>
-            <h2 className="text-4xl sm:text-5xl font-normal tracking-[-0.03em] uppercase text-[#F4F4F1] leading-[0.96]">
-              A CART THAT REMEMBERS <br />
-              <span className="italic font-light text-white/80">YOUR TRUE BUDGET.</span>
+            <h2 className="text-5xl sm:text-6xl md:text-7xl font-normal tracking-[-0.04em] uppercase text-[#F4F4F1] leading-[0.92]">
+              AN INTELLIGENT <br />
+              <span className="italic font-light text-white/70">SHOPPING CART.</span>
             </h2>
           </div>
 
-          <p className="text-sm font-light text-white/50 max-w-md">
-            Most checkout carts encourage silent overspending. AEGIS calculates your stated ceiling in real-time,
-            keeping you informed without stopping your freedom.
+          <p className="text-sm font-light text-white/50 max-w-md lg:text-right leading-relaxed">
+            No sneaky subscriptions or hidden fees. AEGIS continuously evaluates your basket against your stated budget ceiling, providing continuous financial transparency.
           </p>
         </div>
 
-        {/* Cart Display Container */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Cart Line Items */}
-          <div className="lg:col-span-7 rounded-3xl bg-white/[0.02] border border-white/10 p-6 sm:p-8 space-y-6">
-            <h3 className="text-xs font-mono tracking-widest text-white/40 uppercase mb-4">
-              CURRENT PROCUREMENT BUFFER ({cart.length} ITEMS)
-            </h3>
+        {/* Cinematic Cart Matrix */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          {/* Left: Line Items (Product, Quantity, Price, Warranty, Accessories) */}
+          <div className="lg:col-span-7 rounded-3xl bg-gradient-to-b from-white/[0.04] via-white/[0.02] to-[#050607] border border-white/10 p-8 shadow-2xl space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
+              <span className="text-xs font-mono tracking-widest text-white/40 uppercase">
+                ACTIVE CART ITEMS (2 ITEMS)
+              </span>
+              <span className="text-[10px] font-mono text-emerald-400">STATE: VERIFIED SERVER-SIDE</span>
+            </div>
 
-            {/* Line Item 1: Primary Workstation */}
+            {/* Line Item 1: Hardware Product */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/[0.06]">
               <div className="flex items-center gap-4">
-                <img
-                  src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=300&q=80"
-                  alt="AEGIS Pro X1"
-                  className="w-20 h-16 rounded-xl object-cover bg-black"
-                />
+                <div className="w-20 h-16 rounded-2xl overflow-hidden bg-black/60 border border-white/10 shrink-0">
+                  <img
+                    src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=300&q=80"
+                    alt="AEGIS Pro X1 Workstation"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div>
-                  <h4 className="text-base font-normal text-white uppercase">AEGIS PRO X1</h4>
-                  <p className="text-xs font-mono text-white/40">32GB RAM · 1TB SSD · RTX 4070</p>
+                  <h4 className="text-lg font-normal text-white uppercase">AEGIS PRO X1</h4>
+                  <p className="text-xs font-mono text-white/40">Quantity: 1 · 32GB RAM · 1TB SSD · RTX 4070</p>
+                  <span className="text-[10px] font-mono text-emerald-400 mt-1 inline-block">✓ HARDWARE FLOOR SATISFIED</span>
                 </div>
               </div>
               <div className="text-right font-mono">
-                <p className="text-base font-medium text-white">₹74,999</p>
-                <span className="text-[10px] text-emerald-400">OPTIMAL FIT</span>
+                <p className="text-xl font-medium text-white">₹84,999</p>
+                <span className="text-[10px] text-white/40">HIGH-TIER CHASSIS</span>
               </div>
             </div>
 
-            {/* Line Item 2: Extended Warranty Addon */}
-            <div className="flex items-center justify-between gap-4 pb-6 border-b border-white/[0.06]">
+            {/* Line Item 2: Protection Warranty */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/[0.06]">
               <div className="flex items-center gap-4">
-                <div className="w-20 h-14 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center font-mono text-[10px] text-white/60">
+                <div className="w-20 h-16 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center font-mono text-xs text-[#D71920] font-bold shrink-0">
                   CARE+
                 </div>
                 <div>
-                  <h4 className="text-sm font-normal text-white uppercase">AEGIS CARE+ EXTENDED WARRANTY</h4>
-                  <p className="text-[11px] font-mono text-white/40">2-Year Comprehensive Accidental & Hardware</p>
+                  <h4 className="text-base font-normal text-white uppercase">3-YEAR AEGIS CARE+ WARRANTY</h4>
+                  <p className="text-xs font-mono text-white/40">Quantity: 1 · Comprehensive Accidental & Drop Shield</p>
+                  <span className="text-[10px] font-mono text-white/40 mt-1 inline-block">OPTIONAL ADDON</span>
                 </div>
               </div>
               <div className="text-right font-mono">
-                <p className="text-sm font-medium text-white">₹9,999</p>
-                <span className="text-[10px] text-white/40">OPTIONAL ADDON</span>
+                <p className="text-lg font-medium text-white">₹7,999</p>
+                <span className="text-[10px] text-white/40">36-MONTH ENCLAVE</span>
               </div>
             </div>
 
-            {/* Line Item 3: Accessories */}
-            <div className="flex items-center justify-between gap-4 pb-4">
-              <div className="flex items-center gap-4">
-                <div className="w-20 h-14 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center font-mono text-[10px] text-white/60">
-                  TRAVEL
-                </div>
-                <div>
-                  <h4 className="text-sm font-normal text-white uppercase">140W GAN DUAL-PORT TRAVEL ACCESSORY</h4>
-                  <p className="text-[11px] font-mono text-white/40">Braided 240W 2m Cable + Travel Case</p>
-                </div>
-              </div>
-              <div className="text-right font-mono">
-                <p className="text-sm font-medium text-white">₹4,999</p>
-                <span className="text-[10px] text-white/40">ACCESSORY</span>
-              </div>
+            {/* Subtotal Row */}
+            <div className="pt-2 flex justify-between items-center font-mono text-sm text-white/60">
+              <span>SUBTOTAL (INCL. GST & SHIPPING)</span>
+              <span className="text-2xl text-white font-medium">₹92,998</span>
             </div>
           </div>
 
-          {/* Right Column: Total Summary & Core Feature Notification */}
+          {/* Right Column: AEGIS REVIEW Analysis Box */}
           <div className="lg:col-span-5 flex flex-col gap-6">
-            {/* Elegant AEGIS Intent Overage Notice */}
-            <div className="rounded-3xl bg-gradient-to-b from-[#D71920]/[0.12] to-transparent border border-[#D71920]/40 p-6 sm:p-8 shadow-2xl relative">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 rounded-lg bg-[#D71920]/20 text-[#D71920]">
-                  <AlertTriangle className="w-4 h-4" />
+            <div className="rounded-3xl bg-gradient-to-b from-[#D71920]/[0.15] via-[#090A0D] to-[#050607] border-2 border-[#D71920]/50 p-8 shadow-[0_30px_70px_rgba(215,25,32,0.25)] relative overflow-hidden">
+              {/* Header */}
+              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/[0.08]">
+                <div className="w-10 h-10 rounded-xl bg-[#D71920]/20 border border-[#D71920]/40 flex items-center justify-center text-[#D71920]">
+                  <Sparkles className="w-5 h-5 text-[#FF5A3C]" />
                 </div>
-                <h4 className="font-mono text-sm tracking-widest text-white uppercase font-semibold">
-                  AEGIS NOTICE
-                </h4>
+                <div>
+                  <h3 className="font-mono text-base font-bold uppercase tracking-widest text-white">
+                    AEGIS REVIEW
+                  </h3>
+                  <p className="text-[10px] font-mono text-white/50">
+                    Real-time autonomous cart drift analysis
+                  </p>
+                </div>
               </div>
 
-              <p className="text-xs font-mono text-white/80 leading-relaxed mb-4">
-                Your cart has moved beyond your original budget by{' '}
-                <span className="text-[#FF5A3C] font-semibold">₹9,997</span>.
+              {/* Exact Numerical Comparison Matrix */}
+              <div className="space-y-3 font-mono text-xs mb-6">
+                <div className="flex justify-between items-center p-3 rounded-xl bg-black/60 border border-white/10">
+                  <span className="text-white/40">ORIGINAL BUDGET:</span>
+                  <span className="text-white font-medium text-sm">₹80,000</span>
+                </div>
+
+                <div className="flex justify-between items-center p-3 rounded-xl bg-black/60 border border-white/10">
+                  <span className="text-white/40">CURRENT TOTAL:</span>
+                  <span className="text-white font-medium text-sm">₹92,998</span>
+                </div>
+
+                <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#D71920]/20 border border-[#D71920]/50">
+                  <span className="text-[#FF5A3C] font-bold">DRIFT:</span>
+                  <span className="text-xl text-[#FF5A3C] font-bold">+₹12,998</span>
+                </div>
+              </div>
+
+              <p className="text-xs font-mono text-white/70 leading-relaxed mb-6">
+                AEGIS detected an upward excursion of <strong className="text-white">₹12,998</strong>.
+                You remain in full authority — proceed with checkout or modify components anytime.
               </p>
 
-              {/* Constraint comparison */}
-              <div className="p-3 rounded-xl bg-black/60 border border-white/10 text-xs font-mono space-y-2 mb-6">
-                <div className="flex justify-between">
-                  <span className="text-white/40">Original intent budget:</span>
-                  <span className="text-white font-medium">≤ ₹80,000</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-white/40">Current cart total:</span>
-                  <span className="text-[#FF5A3C] font-semibold">₹89,997</span>
-                </div>
-              </div>
-
-              {/* Action Buttons: Human remains in control */}
+              {/* Action Buttons */}
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => {
-                    aegisAudio.playClick();
-                    setDismissedCartNotice(false);
-                  }}
-                  className="flex-1 py-3 rounded-xl bg-white text-[#050607] font-mono text-xs font-semibold tracking-wider uppercase hover:bg-white/90 transition-all text-center cursor-pointer"
-                >
-                  [ REVIEW CART ]
-                </button>
-                <button
-                  onClick={() => {
                     aegisAudio.playVerify();
-                    setDismissedCartNotice(true);
                     setCurrentView('checkout');
                   }}
-                  className="flex-1 py-3 rounded-xl bg-white/[0.08] border border-white/15 text-white/90 font-mono text-xs tracking-wider uppercase hover:bg-white/[0.15] transition-all text-center cursor-pointer"
+                  data-cursor-text="CHECKOUT"
+                  className="flex-1 py-4 px-6 rounded-full bg-white text-[#050607] font-mono text-xs font-semibold tracking-widest uppercase hover:bg-white/90 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xl"
                 >
-                  [ CONTINUE ]
+                  <span>PROCEED TO CHECKOUT</span>
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
-            </div>
-
-            {/* Total Block & Checkout CTA */}
-            <div className="rounded-3xl bg-white/[0.02] border border-white/10 p-6 sm:p-8">
-              <div className="space-y-2.5 font-mono text-xs text-white/60 mb-6">
-                <div className="flex justify-between">
-                  <span>SUBTOTAL</span>
-                  <span className="text-white font-medium">₹89,997</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>SECURE SHIPPING</span>
-                  <span className="text-emerald-400">FREE (AEGIS EXPRESS)</span>
-                </div>
-                <div className="pt-3 border-t border-white/[0.08] flex justify-between text-base font-medium text-white">
-                  <span>TOTAL</span>
-                  <span className="text-2xl text-white font-mono">₹89,997</span>
-                </div>
-              </div>
-
-              <button
-                onClick={() => {
-                  aegisAudio.playVerify();
-                  setCurrentView('checkout');
-                }}
-                className="w-full py-4 rounded-xl bg-white text-[#050607] font-mono text-xs font-semibold tracking-widest uppercase hover:bg-white/90 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xl"
-              >
-                <span>PROCEED TO VERIFIED CHECKOUT</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
             </div>
           </div>
         </div>

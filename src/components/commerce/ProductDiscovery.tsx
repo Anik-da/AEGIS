@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowUpRight, Plus, Eye, Check } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { ArrowUpRight, Plus, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCommerce } from '../../context/CommerceContext';
 import { productsCatalog } from '../../data/products';
 import { aegisAudio } from '../../utils/audio';
@@ -8,6 +8,7 @@ export const ProductDiscovery: React.FC = () => {
   const { setCurrentView, setSelectedProductId, addToCart } = useCommerce();
   const [activeFilter, setActiveFilter] = useState<'ALL' | 'ELECTRONICS' | 'SMARTPHONES' | 'AUDIO' | 'FASHION' | 'LIFESTYLE'>('ALL');
   const [addedId, setAddedId] = useState<string | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const categories = [
     { label: 'ALL COLLECTIONS', val: 'ALL' },
@@ -36,32 +37,68 @@ export const ProductDiscovery: React.FC = () => {
     setTimeout(() => setAddedId(null), 1600);
   };
 
+  const scrollLeft = () => {
+    aegisAudio.playClick();
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -460, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    aegisAudio.playClick();
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 460, behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section id="discover" className="relative w-full py-28 px-6 md:px-12 bg-[#050607] border-t border-white/[0.06]">
-      <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+    <section id="discover" className="relative w-full py-32 px-6 md:px-12 lg:px-16 bg-[#050607] border-t border-white/[0.06] overflow-hidden select-none">
+      {/* Background Ambient Glow */}
+      <div className="absolute top-1/2 left-0 w-96 h-96 bg-[#D71920]/[0.04] blur-[150px] pointer-events-none -translate-y-1/2" />
+
+      <div className="max-w-7xl mx-auto mb-12">
+        {/* Editorial Section Header */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-10">
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="w-1.5 h-1.5 rounded-full bg-[#D71920]" />
-              <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-white/50">
-                CURATED SELECTION · 02
+              <span className="text-[10px] font-mono tracking-[0.34em] uppercase text-white/50">
+                COLLECTION DISCOVERY · 01
               </span>
             </div>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-normal tracking-[-0.03em] uppercase text-[#F4F4F1] leading-[0.96]">
+            <h2 className="text-5xl sm:text-6xl md:text-7xl font-normal tracking-[-0.04em] uppercase text-[#F4F4F1] leading-[0.92]">
               FIND WHAT <br />
-              <span className="italic font-light text-white/80">ACTUALLY FITS YOU.</span>
+              <span className="italic font-light text-white/70">ACTUALLY FITS YOU.</span>
             </h2>
           </div>
 
-          <p className="text-sm font-light text-white/50 max-w-md leading-relaxed">
-            Every device and garment in our catalog is benchmarked against real user requirements,
-            monitored for supply chain authenticity, and guaranteed by AEGIS autonomous verification.
-          </p>
+          <div className="flex flex-col items-start lg:items-end gap-5">
+            <p className="text-sm font-light text-white/50 max-w-md lg:text-right leading-relaxed">
+              Large-format editorial pieces engineered for precision. Every device is cataloged with verified hardware specifications and guarded by AEGIS.
+            </p>
+
+            {/* Navigation Arrows for Horizontal Scroll Track */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={scrollLeft}
+                aria-label="Previous products"
+                className="w-12 h-12 rounded-full border border-white/10 bg-white/[0.03] text-white/70 hover:text-white hover:border-white/30 hover:bg-white/[0.08] transition-all flex items-center justify-center cursor-pointer"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={scrollRight}
+                aria-label="Next products"
+                className="w-12 h-12 rounded-full border border-white/10 bg-white/[0.03] text-white/70 hover:text-white hover:border-white/30 hover:bg-white/[0.08] transition-all flex items-center justify-center cursor-pointer"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* Category Filter Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-12 scrollbar-none">
+        {/* Category Filter Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 scrollbar-none">
           {categories.map((cat) => (
             <button
               key={cat.val}
@@ -69,130 +106,108 @@ export const ProductDiscovery: React.FC = () => {
                 aegisAudio.playClick();
                 setActiveFilter(cat.val);
               }}
-              className={`px-4 py-2 rounded-full font-mono text-[11px] tracking-[0.16em] uppercase whitespace-nowrap transition-all duration-300 ${
+              className={`px-5 py-2.5 rounded-full font-mono text-[10px] tracking-[0.2em] uppercase whitespace-nowrap transition-all duration-300 cursor-pointer ${
                 activeFilter === cat.val
-                  ? 'bg-white text-[#050607] font-semibold shadow-lg'
-                  : 'bg-white/[0.03] text-white/60 hover:text-white hover:bg-white/[0.08] border border-white/[0.06]'
+                  ? 'bg-white text-[#050607] font-semibold shadow-[0_0_20px_rgba(255,255,255,0.2)]'
+                  : 'bg-white/[0.03] text-white/50 hover:text-white hover:bg-white/[0.08] border border-white/[0.07]'
               }`}
             >
               {cat.label}
             </button>
           ))}
         </div>
+      </div>
 
-        {/* Asymmetric Luxury Product Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {displayProducts.map((product, idx) => {
-            const isTall = idx === 0 || idx === 3;
+      {/* Horizontal Scrolling Gallery Track */}
+      <div 
+        ref={scrollContainerRef}
+        className="flex gap-8 overflow-x-auto pb-8 pt-4 px-6 md:px-12 lg:px-16 scrollbar-none snap-x snap-mandatory"
+        style={{ scrollBehavior: 'smooth' }}
+      >
+        {displayProducts.map((product, idx) => (
+          <div
+            key={product.id}
+            onClick={() => handleProductClick(product.id)}
+            data-cursor-text="EXPLORE"
+            className="group relative flex-none w-[340px] sm:w-[420px] md:w-[460px] rounded-3xl bg-gradient-to-b from-white/[0.05] via-white/[0.02] to-[#050607] border border-white/10 p-6 flex flex-col justify-between overflow-hidden cursor-pointer hover:border-white/25 transition-all duration-700 hover:shadow-[0_30px_70px_rgba(0,0,0,0.8)] snap-start"
+          >
+            {/* Ambient Card Glow */}
+            <div className="absolute inset-0 bg-radial from-white/[0.04] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-            return (
-              <div
-                key={product.id}
-                onClick={() => handleProductClick(product.id)}
-                className={`group relative rounded-2xl bg-white/[0.02] border border-white/[0.07] p-5 flex flex-col justify-between overflow-hidden cursor-pointer hover:border-white/20 transition-all duration-500 hover:shadow-2xl ${
-                  isTall ? 'md:row-span-1' : ''
-                }`}
-              >
-                {/* Product Image Stage */}
-                <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-black/40 mb-5">
-                  <img
-                    src={product.primaryImage}
-                    alt={product.name}
-                    className="w-full h-full object-cover object-center transform transition-transform duration-700 group-hover:scale-108"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050607]/80 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
+            {/* Editorial Product Image Stage */}
+            <div className="relative w-full aspect-[16/11] rounded-2xl overflow-hidden bg-black/60 mb-6 shadow-inner">
+              <img
+                src={product.primaryImage}
+                alt={product.name}
+                className="w-full h-full object-cover object-center transform transition-transform duration-1000 ease-out group-hover:scale-108"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050607]/80 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
 
-                  {/* AI Fit Tag */}
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-[#050607]/85 backdrop-blur-md border border-white/10 flex items-center gap-1.5 shadow-md">
-                    <span
-                      className={`w-1.5 h-1.5 rounded-full ${
-                        product.aiFitScore >= 90
-                          ? 'bg-emerald-400'
-                          : product.aiFitScore >= 80
-                          ? 'bg-amber-400'
-                          : 'bg-[#D71920]'
-                      }`}
-                    />
-                    <span className="text-[10px] font-mono tracking-wider text-white">
-                      {product.aiFitScore}% AI FIT
-                    </span>
-                  </div>
-
-                  {/* Hover Quick Action Buttons */}
-                  <div className="absolute bottom-3 right-3 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button
-                      onClick={(e) => handleQuickAdd(e, product)}
-                      className="p-2.5 rounded-full bg-white text-[#050607] hover:bg-white/90 shadow-xl transition-transform hover:scale-110"
-                      title="Quick Add to Cart"
-                    >
-                      {addedId === product.id ? (
-                        <Check className="w-4 h-4 text-emerald-600" />
-                      ) : (
-                        <Plus className="w-4 h-4" />
-                      )}
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleProductClick(product.id);
-                      }}
-                      className="p-2.5 rounded-full bg-[#050607]/90 text-white border border-white/20 hover:bg-black transition-transform hover:scale-110"
-                      title="View Details"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Information Header */}
-                <div>
-                  <div className="flex items-center justify-between text-[10px] font-mono tracking-[0.22em] text-white/40 uppercase mb-1">
-                    <span>{product.subCategory || product.category}</span>
-                    <span className="text-white/60">★ {product.rating.toFixed(1)}</span>
-                  </div>
-
-                  <h3 className="text-xl font-normal uppercase tracking-tight text-[#F4F4F1] group-hover:text-white transition-colors flex items-center justify-between">
-                    <span>{product.name}</span>
-                    <ArrowUpRight className="w-4 h-4 text-white/30 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-                  </h3>
-
-                  <p className="text-xs text-white/50 line-clamp-2 mt-1.5 font-light leading-relaxed">
-                    {product.description}
-                  </p>
-                </div>
-
-                {/* Key Spec Highlights Pill Array */}
-                <div className="flex flex-wrap gap-1.5 my-4">
-                  {product.keySpecs.slice(0, 3).map((spec, sIdx) => (
-                    <span
-                      key={sIdx}
-                      className="text-[9px] font-mono tracking-wider px-2 py-0.5 rounded bg-white/[0.04] text-white/60 border border-white/[0.05]"
-                    >
-                      {spec}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Price & Action Row */}
-                <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between">
-                  <div>
-                    <span className="text-lg font-mono font-medium text-white">{product.formattedPrice}</span>
-                    {product.originalPrice && (
-                      <span className="text-xs font-mono text-white/30 line-through ml-2">
-                        ₹{product.originalPrice.toLocaleString('en-IN')}
-                      </span>
-                    )}
-                  </div>
-
-                  <span className="text-[10px] font-mono tracking-widest text-[#D71920] uppercase font-semibold">
-                    EXPLORE →
-                  </span>
-                </div>
+              {/* Floating Top Match Pill */}
+              <div className="absolute top-3.5 left-3.5 px-3 py-1.5 rounded-full bg-[#050607]/85 backdrop-blur-md border border-white/15 flex items-center gap-2 shadow-lg">
+                <span
+                  className={`w-1.5 h-1.5 rounded-full ${
+                    product.aiFitScore >= 90
+                      ? 'bg-emerald-400 shadow-[0_0_8px_#34d399]'
+                      : product.aiFitScore >= 80
+                      ? 'bg-amber-400'
+                      : 'bg-[#D71920]'
+                  }`}
+                />
+                <span className="text-[10px] font-mono tracking-widest text-white/90">
+                  {product.aiFitScore}% INTENT FIT
+                </span>
               </div>
-            );
-          })}
-        </div>
+
+              {/* Quick Add CTA */}
+              <button
+                onClick={(e) => handleQuickAdd(e, product)}
+                className="absolute bottom-3.5 right-3.5 p-3 rounded-full bg-white text-[#050607] hover:bg-white/90 shadow-2xl transition-all duration-300 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 cursor-pointer"
+                title="Quick Add"
+              >
+                {addedId === product.id ? (
+                  <Check className="w-4 h-4 text-emerald-600" />
+                ) : (
+                  <Plus className="w-4 h-4" />
+                )}
+              </button>
+            </div>
+
+            {/* Minimal Editorial Information */}
+            <div>
+              <div className="flex items-center justify-between text-[10px] font-mono tracking-[0.24em] text-white/40 uppercase mb-1.5">
+                <span>{product.subCategory || product.category}</span>
+                <span className="text-white/60">★ {product.rating.toFixed(1)}</span>
+              </div>
+
+              <h3 className="text-2xl font-normal uppercase tracking-tight text-[#F4F4F1] group-hover:text-white transition-colors flex items-center justify-between">
+                <span>{product.name}</span>
+                <ArrowUpRight className="w-4 h-4 text-white/30 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
+              </h3>
+
+              <p className="text-xs text-white/50 line-clamp-2 mt-2 font-light leading-relaxed">
+                {product.description}
+              </p>
+            </div>
+
+            {/* Metadata Specs & Price Row */}
+            <div className="pt-6 mt-6 border-t border-white/[0.07] flex items-center justify-between">
+              <div>
+                <span className="text-2xl font-mono font-medium text-white">{product.formattedPrice}</span>
+                {product.originalPrice && (
+                  <span className="text-xs font-mono text-white/30 line-through ml-2">
+                    ₹{product.originalPrice.toLocaleString('en-IN')}
+                  </span>
+                )}
+              </div>
+
+              <span className="text-[10px] font-mono tracking-[0.2em] text-[#D71920] uppercase font-semibold group-hover:text-white transition-colors">
+                DETAILS →
+              </span>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

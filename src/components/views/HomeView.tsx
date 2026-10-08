@@ -7,10 +7,10 @@ import { IntentDriftTimeline } from '../commerce/IntentDriftTimeline';
 import { ProductDetailSpotlight } from '../commerce/ProductDetailSpotlight';
 import { CartSection } from '../commerce/CartSection';
 import { CheckoutSection } from '../commerce/CheckoutSection';
-import { TransactionProtectionStory } from '../commerce/TransactionProtectionStory';
 import { TamperGuardDemo } from '../commerce/TamperGuardDemo';
 import { ThreatGuardStory } from '../commerce/ThreatGuardStory';
 import { HealGuardStory } from '../commerce/HealGuardStory';
+import { RollbackStory } from '../commerce/RollbackStory';
 import { ControlCenterSection } from '../commerce/ControlCenterSection';
 import { DefenseCoreVisual } from '../commerce/DefenseCoreVisual';
 import { CommerceFinalCTA } from '../commerce/CommerceFinalCTA';
@@ -33,7 +33,7 @@ export const HomeView: React.FC = () => {
         <IntentUnderstandingSection />
       </div>
 
-      {/* 04. Intent Match & Intervention Notice */}
+      {/* 04. Intent Match Across the Catalog */}
       <div id="intent-match">
         <IntentMatchSection />
       </div>
@@ -58,24 +58,24 @@ export const HomeView: React.FC = () => {
         <CheckoutSection />
       </div>
 
-      {/* 09. Transaction Protection Story — User -> Action -> Aegis -> Verification */}
-      <div id="trust-story">
-        <TransactionProtectionStory />
-      </div>
-
-      {/* 10. TamperGuard Demonstration — Browser is not the trust boundary */}
+      {/* 09. TamperGuard Demonstration — Your Browser is Not the Authority */}
       <div id="tamper-guard">
         <TamperGuardDemo />
       </div>
 
-      {/* 11. ThreatGuard Story — When Something Doesn't Belong */}
+      {/* 10. ThreatGuard Story — When an Attack Isn't One Event */}
       <div id="threat-guard">
         <ThreatGuardStory />
       </div>
 
-      {/* 12. HealGuard Autonomous Error Recovery Pipeline */}
+      {/* 11. HealGuard Autonomous Error Recovery Pipeline */}
       <div id="heal-guard">
         <HealGuardStory />
+      </div>
+
+      {/* 12. Automated Recovery Rollback — Canary Resilience */}
+      <div id="rollback-guard">
+        <RollbackStory />
       </div>
 
       {/* 13. AEGIS Control Center (Secondary SOC Dashboard) */}
@@ -88,7 +88,7 @@ export const HomeView: React.FC = () => {
         <DefenseCoreVisual />
       </div>
 
-      {/* 15. Final CTA — Shop with Intent. Live with Confidence */}
+      {/* 15. Final CTA — Shop with Confidence */}
       <div id="final-cta">
         <CommerceFinalCTA />
       </div>

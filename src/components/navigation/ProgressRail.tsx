@@ -10,17 +10,17 @@ export const ProgressRail: React.FC<ProgressRailProps> = ({ activeSection }) => 
 
   const sections = [
     { id: 'hero', num: '01', label: 'SHOP WITH INTENT' },
-    { id: 'discover', num: '02', label: 'PRODUCT DISCOVERY' },
-    { id: 'intent-layer', num: '03', label: 'INTENT UNDERSTANDING' },
+    { id: 'discover', num: '02', label: 'DISCOVER' },
+    { id: 'intent-layer', num: '03', label: 'AI UNDERSTANDS INTENT' },
     { id: 'intent-match', num: '04', label: 'INTENT MATCH' },
     { id: 'intent-drift', num: '05', label: 'INTENT DRIFT' },
-    { id: 'spotlight', num: '06', label: 'AEGIS PRO X1' },
-    { id: 'cart-preview', num: '07', label: 'INTENT CART' },
-    { id: 'checkout-preview', num: '08', label: 'FINAL AEGIS CHECK' },
-    { id: 'trust-story', num: '09', label: 'TRANSACTION GUARDIAN' },
-    { id: 'tamper-guard', num: '10', label: 'TAMPERGUARD' },
-    { id: 'threat-guard', num: '11', label: 'THREATGUARD' },
-    { id: 'heal-guard', num: '12', label: 'HEALGUARD' },
+    { id: 'spotlight', num: '06', label: 'PRODUCT DETAIL' },
+    { id: 'cart-preview', num: '07', label: 'CART REVIEW' },
+    { id: 'checkout-preview', num: '08', label: 'CHECKOUT' },
+    { id: 'tamper-guard', num: '09', label: 'TAMPERGUARD' },
+    { id: 'threat-guard', num: '10', label: 'THREATGUARD' },
+    { id: 'heal-guard', num: '11', label: 'HEALGUARD' },
+    { id: 'rollback-guard', num: '12', label: 'ROLLBACK' },
     { id: 'control-center', num: '13', label: 'CONTROL CENTER' },
     { id: 'defense-core', num: '14', label: 'AEGIS CORE' },
     { id: 'final-cta', num: '15', label: 'SHOP WITH CONFIDENCE' },
@@ -62,7 +62,7 @@ export const ProgressRail: React.FC<ProgressRailProps> = ({ activeSection }) => 
             {/* Dash bar */}
             <button
               aria-label={`Jump to ${sec.label}`}
-              className="py-1 px-1 flex items-center justify-end focus:outline-none"
+              className="py-1 px-1 flex items-center justify-end focus:outline-none cursor-pointer"
             >
               <span
                 className={`block h-[1.5px] rounded-full transition-all duration-300 ${

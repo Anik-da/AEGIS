@@ -33,10 +33,10 @@ const AegisCommerceInner: React.FC = () => {
       'spotlight',
       'cart-preview',
       'checkout-preview',
-      'trust-story',
       'tamper-guard',
       'threat-guard',
       'heal-guard',
+      'rollback-guard',
       'control-center',
       'defense-core',
       'final-cta'
