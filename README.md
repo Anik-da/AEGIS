@@ -1,6 +1,9 @@
 # 🛡️ AEGIS COMMERCE
 ### *The Autonomous Digital Guardian & Cyber Defense Engine for Next-Generation Commerce*
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-aegis--commerce.web.app-E11D48?logo=firebase&logoColor=white&style=for-the-badge)](https://aegis-commerce.web.app)
+[![Firebase Hosting](https://img.shields.io/badge/Firebase%20Hosting-Active%20Deployment-0284C7?logo=googlecloud&logoColor=white&style=for-the-badge)](https://aegis-commerce.web.app)
+
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8%20%7C%20ES2022-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19.0-61DAFB?logo=react&logoColor=black)](https://react.dev/)
 [![Firebase](https://img.shields.io/badge/Firebase-Firestore%20%2B%20Realtime%20DB-FFCA28?logo=firebase&logoColor=black)](https://firebase.google.com/)
@@ -8,6 +11,10 @@
 [![Vite](https://img.shields.io/badge/Vite-8.3-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Zero Trust](https://img.shields.io/badge/Security-Zero%20Trust%20Architecture-10B981)](#-zero-trust-security--governance)
 [![Tests](https://img.shields.io/badge/Tests-29%2F29%20Passing%20(100%25)-brightgreen)](#-automated-verification--test-suite)
+
+> 🌐 **LIVE WEB APPLICATION**: [https://aegis-commerce.web.app](https://aegis-commerce.web.app)  
+> 🔗 **Alternative Firebase Domain**: [https://aegis-commerce.firebaseapp.com](https://aegis-commerce.firebaseapp.com)  
+> 📊 **Firebase Console Project**: [`aegis-commerce`](https://console.firebase.google.com/project/aegis-commerce/overview)
 
 > **AEGIS COMMERCE** unites an ultra-premium, cinematic digital storefront with an autonomous, real-time AI cybersecurity defense matrix. Designed on the principle that modern cyber defense should be **an invisible, intelligent shield rather than an obstacle**, AEGIS observes user interactions, creates semantic intent contracts, intercepts client-side payload tampering, correlates distributed attack chains, and autonomously heals vulnerable application code inside isolated execution sandboxes.
 
@@ -289,6 +296,25 @@ AEGIS uses **Google Cloud Firebase Firestore** for persistent records and **Fire
 * **AI Orchestration**: OpenRouter SDK (`google/gemma-4-26b-a4b`), Hugging Face API (`google/gemma-4-26B-A4B`)
 * **Security & Auth**: Helmet, CORS, Express-Rate-Limit, Bcrypt, JsonWebToken
 * **Validation**: Zod schema validation
+
+---
+
+## 🌐 LIVE CLOUD DEPLOYMENT
+
+The AEGIS Commerce frontend is globally deployed on Google Cloud via Firebase Hosting with global edge caching and automated SSL termination:
+
+| Service | Endpoint / Link | Status |
+| :--- | :--- | :--- |
+| **Production Web App** | [https://aegis-commerce.web.app](https://aegis-commerce.web.app) | 🟢 Live (HTTP 200) |
+| **Alternative Domain** | [https://aegis-commerce.firebaseapp.com](https://aegis-commerce.firebaseapp.com) | 🟢 Live |
+| **Firebase Cloud Console** | [console.firebase.google.com/project/aegis-commerce](https://console.firebase.google.com/project/aegis-commerce/overview) | 🔒 Project `aegis-commerce` |
+| **Hosting Environment** | Firebase Global CDN Edge Network | ⚡ HTTP/2 + Brotli |
+
+### Live Exploration Highlights:
+- **15-Chapter Cinematic Walkthrough**: Experience the complete uncompressed product story from masked hero reveals to autonomous self-healing and canary rollback.
+- **Interactive Intent Drift**: Test real-time budget divergence tracking from ₹80,000 to ₹92,998 without intrusive blocking.
+- **Client Tamper Defense Simulation**: Observe how client DOM manipulations (₹74,999 → ₹1) are detected and suppressed against authoritative server truth.
+- **AEGIS Control Center HUD**: Live telemetry metrics (Protection Score 94, Events 24, Threats 3, Repairs 4).
 
 ---
 
