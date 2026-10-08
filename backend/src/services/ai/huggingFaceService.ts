@@ -18,8 +18,15 @@ export class HuggingFaceService {
 
   constructor() {
     this.apiKey = ENV.HUGGINGFACE_API_KEY;
-    this.model = ENV.HUGGINGFACE_MODEL || 'Qwen/Qwen3-8B';
-    this.endpoint = `https://api-inference.huggingface.co/models/${this.model}`;
+    const configuredModel = ENV.HUGGINGFACE_MODEL || 'google/gemma-4-26B-A4B';
+    
+    // Strict publisher verification
+    if (!configuredModel.toLowerCase().startsWith('google/')) {
+      throw new Error(`[AEGIS AI Policy Violation] Hugging Face model must be a Google model. Received: ${configuredModel}`);
+    }
+    
+    this.model = configuredModel;
+    this.endpoint = `https://router.huggingface.co/hf-inference/models/${this.model}`;
   }
 
   public isAvailable(): boolean {
@@ -67,9 +74,15 @@ export class HuggingFaceService {
 
       if (!response.ok) {
         const errorText = await response.text();
+        const isNotSupported = errorText.includes('Model not supported') || response.status === 400 || response.status === 404;
+        const formattedErr = isNotSupported
+          ? `Google model unavailable through the configured Hugging Face provider. (${this.model})`
+          : `Hugging Face HTTP ${response.status}: ${errorText.slice(0, 200)}`;
+        
+        logger.warn(`[Hugging Face] ${formattedErr}`);
         return {
           success: false,
-          error: `Hugging Face HTTP ${response.status}: ${errorText.slice(0, 200)}`,
+          error: formattedErr,
           model: this.model,
           durationMs
         };

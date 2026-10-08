@@ -9,6 +9,7 @@ dist/
 dist-ssr/
 backend/dist/
 build/
+.firebase/
 
 # Environment and sensitive keys
 .env

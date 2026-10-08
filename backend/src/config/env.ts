@@ -21,13 +21,22 @@ export const ENV = {
   OPENROUTER_MODEL: process.env.OPENROUTER_MODEL || 'google/gemma-4-26b-a4b',
 
   HUGGINGFACE_API_KEY: process.env.HUGGINGFACE_API_KEY || '',
-  HUGGINGFACE_MODEL: process.env.HUGGINGFACE_MODEL || 'Qwen/Qwen3-8B',
+  HUGGINGFACE_MODEL: process.env.HUGGINGFACE_MODEL || 'google/gemma-4-26B-A4B',
 
   FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:5173',
   DEMO_MODE: process.env.DEMO_MODE === 'true' || process.env.DEMO_MODE === '1' || true,
 };
 
 export function assertSafeConfig(): void {
+  // STRICT GOOGLE AI MODEL ENFORCEMENT
+  if (!ENV.OPENROUTER_MODEL.toLowerCase().startsWith('google/')) {
+    throw new Error(`[AEGIS Policy Violation] Non-Google AI model detected for OpenRouter: ${ENV.OPENROUTER_MODEL}. Only Google Gemma models are permitted.`);
+  }
+
+  if (ENV.HUGGINGFACE_MODEL && !ENV.HUGGINGFACE_MODEL.toLowerCase().startsWith('google/')) {
+    throw new Error(`[AEGIS Policy Violation] Non-Google AI model detected for Hugging Face: ${ENV.HUGGINGFACE_MODEL}. Only Google Gemma models are permitted.`);
+  }
+
   if (ENV.NODE_ENV === 'production') {
     if (!ENV.OPENROUTER_API_KEY) {
       console.warn('⚠️ [AEGIS Config] OPENROUTER_API_KEY is not defined.');

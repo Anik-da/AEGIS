@@ -16,9 +16,9 @@ export interface AIRoutingResult<T> {
 export class AIRouter {
   /**
    * Routes an AI request through:
-   * 1. OpenRouter (Gemma 4 26B)
-   * 2. Hugging Face (Qwen3-8B)
-   * 3. Deterministic fallback logic
+   * 1. OpenRouter (Google Gemma 4 26B A4B)
+   * 2. Hugging Face (Google Gemma model only)
+   * 3. Deterministic fallback logic (Authoritative backend rules)
    */
   public async routeAnalysis<T>(
     prompt: string,
