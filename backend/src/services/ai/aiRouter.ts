@@ -48,7 +48,7 @@ export class AIRouter {
       }
     }
 
-    // 2. Try Hugging Face (Qwen/Qwen3-8B)
+    // 2. Try Hugging Face (Google Gemma model only)
     if (huggingFaceService.isAvailable()) {
       try {
         const hfRes = await huggingFaceService.generateInference<T>(prompt, schema);

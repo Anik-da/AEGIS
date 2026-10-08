@@ -4,7 +4,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8%20%7C%20ES2022-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19.0-61DAFB?logo=react&logoColor=black)](https://react.dev/)
 [![Firebase](https://img.shields.io/badge/Firebase-Firestore%20%2B%20Realtime%20DB-FFCA28?logo=firebase&logoColor=black)](https://firebase.google.com/)
-[![OpenRouter](https://img.shields.io/badge/AI%20Core-Gemma%204%2026B%20%7C%20Qwen%203%208B-6366F1)](https://openrouter.ai/)
+[![OpenRouter](https://img.shields.io/badge/AI%20Core-Google%20Gemma%204%2026B%20A4B-6366F1)](https://openrouter.ai/)
 [![Vite](https://img.shields.io/badge/Vite-8.3-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Zero Trust](https://img.shields.io/badge/Security-Zero%20Trust%20Architecture-10B981)](#-zero-trust-security--governance)
 [![Tests](https://img.shields.io/badge/Tests-29%2F29%20Passing%20(100%25)-brightgreen)](#-automated-verification--test-suite)
@@ -121,7 +121,7 @@ Before any checkout transaction or inventory reservation is committed to the dat
 |         |                                                                                             |
 |         +---> Primary Engine: OpenRouter (google/gemma-4-26b-a4b-it) [Deep Semantic Reasoning]       |
 |         |                                                                                             |
-|         +---> Secondary Engine: Hugging Face (Qwen/Qwen3-8B) [High-Speed Fallback]                    |
+|         +---> Secondary Engine: Hugging Face (google/gemma-4-26B-A4B) [Google Model Only]             |
 |         |                                                                                             |
 |         +---> Tertiary Engine: Deterministic Safety Engine [100% Availability Offline Rulebook]       |
 +-------------------------------------------------------------------------------------------------------+
@@ -135,14 +135,14 @@ Before any checkout transaction or inventory reservation is committed to the dat
 
 ---
 
-## 🤖 DUAL-AI ROUTING LAYER
+## 🤖 DUAL-AI ROUTING LAYER (GOOGLE AI EXCLUSIVE)
 
-AEGIS leverages a resilient multi-tier AI pipeline designed for low-latency reasoning and mission-critical availability:
+AEGIS leverages a resilient multi-tier AI pipeline strictly restricted to **Google AI Models**:
 
 | Tier | Provider | Model | Primary Role |
 | :--- | :--- | :--- | :--- |
 | **Primary** | OpenRouter | `google/gemma-4-26b-a4b-it` | Intent contract compilation, multi-event attack chain correlation, code vulnerability diagnosis, and candidate patch synthesis |
-| **Secondary** | Hugging Face | `Qwen/Qwen3-8B` | High-speed semantic classification, lightweight threat scoring, and automated fallback when OpenRouter is unreachable |
+| **Secondary** | Hugging Face | `google/gemma-4-26B-A4B` | Secondary Google Gemma inference stream and policy-restricted fallback (Google-only models permitted) |
 | **Tertiary** | Built-in | Deterministic Rule Engine | Zero-dependency safety heuristics ensuring uninterrupted operation even in total upstream API outages |
 
 ---
@@ -286,7 +286,7 @@ AEGIS uses **Google Cloud Firebase Firestore** for persistent records and **Fire
 * **Runtime**: Node.js, Express.js, TypeScript (ES2022)
 * **Databases**: Firebase Cloud Firestore & Firebase Realtime Database
 * **Real-time Transport**: Socket.IO
-* **AI Orchestration**: OpenRouter SDK (`gemma-4-26b`), Hugging Face API (`qwen-3-8b`)
+* **AI Orchestration**: OpenRouter SDK (`google/gemma-4-26b-a4b`), Hugging Face API (`google/gemma-4-26B-A4B`)
 * **Security & Auth**: Helmet, CORS, Express-Rate-Limit, Bcrypt, JsonWebToken
 * **Validation**: Zod schema validation
 
@@ -334,7 +334,7 @@ OPENROUTER_API_KEY=your_openrouter_api_key_here
 OPENROUTER_MODEL=google/gemma-4-26b-a4b
 
 HUGGINGFACE_API_KEY=your_huggingface_api_key_here
-HUGGINGFACE_MODEL=Qwen/Qwen3-8B
+HUGGINGFACE_MODEL=google/gemma-4-26B-A4B
 ```
 
 > ⚠️ **CRITICAL SECURITY NOTE**: Never commit `.env` files containing real API keys or cryptographic secrets to GitHub. Both root `.env` and `backend/.env` are strictly excluded in `.gitignore`.
