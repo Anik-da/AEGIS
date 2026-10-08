@@ -1,0 +1,13 @@
+/* AEGIS AI Component Animations */
+@keyframes pulseSubtle {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
